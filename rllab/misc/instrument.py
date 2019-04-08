@@ -342,7 +342,7 @@ def run_experiment_lite(
         exp_name=None,
         log_dir=None,
         script="scripts/run_experiment_lite.py",
-        python_command="python",
+        python_command="/u/jhoang/anaconda3/envs/tf14/bin/python3",
         mode="local",
         dry=False,
         docker_image=None,

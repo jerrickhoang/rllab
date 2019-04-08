@@ -6,13 +6,12 @@ from rllab.spaces.product import Product as TheanoProduct
 from sandbox.rocky.tf.spaces.discrete import Discrete
 from sandbox.rocky.tf.spaces.box import Box
 from sandbox.rocky.tf.spaces.product import Product
-from cached_property import cached_property
-
-from gym.spaces.box import Box as gymBox
+#from cached_property import cached_property
+from werkzeug import cached_property
 
 
 def to_tf_space(space):
-    if isinstance(space, TheanoBox) or isinstance(space, gymBox):
+    if isinstance(space, TheanoBox):
         return Box(low=space.low, high=space.high)
     elif isinstance(space, TheanoDiscrete):
         return Discrete(space.n)

@@ -1,5 +1,6 @@
 import numpy as np
-from cached_property import cached_property
+#from cached_property import cached_property
+from werkzeug import cached_property
 
 from rllab import spaces
 from rllab.core.serializable import Serializable

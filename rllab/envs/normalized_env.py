@@ -6,7 +6,7 @@ from rllab.envs.proxy_env import ProxyEnv
 from rllab.spaces.box import Box
 from rllab.misc.overrides import overrides
 from rllab.envs.base import Step
-
+from gym.spaces.box import Box as gymBox
 
 class NormalizedEnv(ProxyEnv, Serializable):
     def __init__(
@@ -24,8 +24,9 @@ class NormalizedEnv(ProxyEnv, Serializable):
         self._normalize_obs = normalize_obs
         self._normalize_reward = normalize_reward
         self._obs_alpha = obs_alpha
-        self._obs_mean = np.zeros(env.observation_space.flat_dim)
-        self._obs_var = np.ones(env.observation_space.flat_dim)
+        obs_flat_dim = np.prod(env.observation_space.low.shape)
+        self._obs_mean = np.zeros(obs_flat_dim)
+        self._obs_var = np.ones(obs_flat_dim)
         self._reward_alpha = reward_alpha
         self._reward_mean = 0.
         self._reward_var = 1.
@@ -69,16 +70,20 @@ class NormalizedEnv(ProxyEnv, Serializable):
     @property
     @overrides
     def action_space(self):
-        if isinstance(self._wrapped_env.action_space, Box):
+        if isinstance(self._wrapped_env.action_space, Box) or isinstance(self._wrapped_env.action_space, gymBox):
             ub = np.ones(self._wrapped_env.action_space.shape)
             return spaces.Box(-1 * ub, ub)
         return self._wrapped_env.action_space
 
     @overrides
     def step(self, action):
-        if isinstance(self._wrapped_env.action_space, Box):
+        if isinstance(self._wrapped_env.action_space, Box) or isinstance(self._wrapped_env.action_space, gymBox):
             # rescale the action
-            lb, ub = self._wrapped_env.action_space.bounds
+            if isinstance(self._wrapped_env.action_space, Box):
+                lb, ub = self._wrapped_env.action_space.bounds
+            else:
+                lb = self._wrapped_env.action_space.low
+                ub = self._wrapped_env.action_space.high
             scaled_action = lb + (action + 1.) * 0.5 * (ub - lb)
             scaled_action = np.clip(scaled_action, lb, ub)
         else:

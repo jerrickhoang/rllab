@@ -1,6 +1,7 @@
 from .env_spec import EnvSpec
 import collections
-from cached_property import cached_property
+#from cached_property import cached_property
+from werkzeug import cached_property
 
 
 class Env(object):

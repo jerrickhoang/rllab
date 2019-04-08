@@ -1,9 +1,9 @@
 import numpy as np
 import scipy
 import scipy.signal
-import theano.tensor.nnet
-import theano.tensor as TT
-import theano.tensor.extra_ops
+#import theano.tensor.nnet
+#import theano.tensor as TT
+#import theano.tensor.extra_ops
 from collections import OrderedDict
 
 
@@ -34,8 +34,8 @@ def softmax(x):
     return expx / np.sum(expx, axis=-1, keepdims=True)
 
 
-def softmax_sym(x):
-    return theano.tensor.nnet.softmax(x)
+#def softmax_sym(x):
+#    return theano.tensor.nnet.softmax(x)
 
 
 # compute entropy for each row
@@ -71,9 +71,9 @@ def to_onehot_n(inds, dim):
     return ret
 
 
-def to_onehot_sym(ind, dim):
-    assert ind.ndim == 1
-    return theano.tensor.extra_ops.to_one_hot(ind, dim)
+#def to_onehot_sym(ind, dim):
+#    assert ind.ndim == 1
+#    return theano.tensor.extra_ops.to_one_hot(ind, dim)
 
 
 def from_onehot(v):
@@ -86,11 +86,10 @@ def from_onehot_n(v):
     return np.nonzero(v)[1]
 
 
+"""
 def normalize_updates(old_mean, old_std, new_mean, new_std, old_W, old_b):
-    """
-    Compute the updates for normalizing the last (linear) layer of a neural
-    network
-    """
+    #Compute the updates for normalizing the last (linear) layer of a neural
+    #network
     # Make necessary transformation so that
     # (W_old * h + b_old) * std_old + mean_old == \
     #   (W_new * h + b_new) * std_new + mean_new
@@ -102,6 +101,7 @@ def normalize_updates(old_mean, old_std, new_mean, new_std, old_W, old_b):
         (old_mean, new_mean),
         (old_std, new_std),
     ])
+"""
 
 
 def discount_cumsum(x, discount):
