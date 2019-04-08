@@ -1,3 +1,24 @@
+
+# Notes
+
+To use the forked version, you'll need to install conda tf14 environment as specified in this repo. However, mbbl uses gym==0.7.4 instead of gym==0.8.0.
+
+To run mbbl env, use prefix `benchmark`
+```
+source activate tf14
+~/anaconda3/envs/tf14/bin/python3 run_model_based_rl.py trpo -env benchmark-half-cheetah
+```
+
+To run the original env, 
+```
+source activate tf14
+~/anaconda3/envs/tf14/bin/python3 run_model_based_rl.py trpo -env half-cheetah
+```
+
+---
+
+
+
 rllab is no longer under active development, but an [alliance of researchers](https://github.com/rlworkgroup/) from several universities has adopted it, and now maintains it under the name [**garage**](https://github.com/rlworkgroup/garage).
 
 We recommend you develop new projects, and rebase old ones, onto the actively-maintained [garage](https://github.com/rlworkgroup/garage) codebase, to promote reproducibility and code-sharing in RL research. The new codebase shares almost all of its code with rllab, so most conversions only need to edit package import paths and perhaps update some renamed functions. 
