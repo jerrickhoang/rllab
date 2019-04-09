@@ -17,8 +17,6 @@ class BenchmarkHalfCheetahEnv(Serializable):
         Serializable.__init__(self, *args, **kwargs)
         self.ctrl_cost_coeff = 1e-1
         self._env = walker.env('gym_cheetah', 1234, {})
-        self.init_qacc = self._env._env.env.model.data.qacc
-        self.init_ctrl = self._env._env.env.model.data.ctrl
         self.action_space = self._env._env.action_space
         self.observation_space = self._env._env.observation_space
 
@@ -72,14 +70,13 @@ class BenchmarkHalfCheetahEnv(Serializable):
 
     def cost_np(self, x, u, x_next):
         assert np.amax(np.abs(u)) <= 1.0
-        # return -np.mean(x_next[:, 9] - self.ctrl_cost_coeff * 0.5 * np.sum(np.square(u), axis=1))
-        return -np.mean(np.clip(x_next[:, 9] - self.ctrl_cost_coeff * 0.5 * np.sum(np.square(u), axis=1), -10, 10))
+        data_dict = {"start_state": x, "action": u, "end_state": x_next}
+        return -self._env.reward(data_dict)
 
     def cost_tf(self, x, u, x_next):
-        # return -tf.reduce_mean(x_next[:, 9] - self.ctrl_cost_coeff * 0.5 * tf.reduce_sum(tf.square(u), axis=1))
-        return -tf.reduce_mean(tf.clip_by_value(x_next[:, 9] - self.ctrl_cost_coeff * 0.5 * tf.reduce_sum(tf.square(u), axis=1), -10, 10))
+        data_dict = {"start_state": x, "action": u, "end_state": x_next}
+        return -1 * self._env.reward_tf(data_dict)
 
     def cost_np_vec(self, x, u, x_next):
         assert np.amax(np.abs(u)) <= 1.0
-        # return -(x_next[:, 9] - self.ctrl_cost_coeff * 0.5 * np.sum(np.square(u), axis=1))
-        return -np.clip(x_next[:, 9] - self.ctrl_cost_coeff * 0.5 * np.sum(np.square(u), axis=1), -10, 10)
+        return self.cost_np(x, u, x_next)
