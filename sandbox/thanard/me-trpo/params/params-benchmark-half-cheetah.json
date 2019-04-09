@@ -1,5 +1,5 @@
 {
-    "algo": "trpo",
+    "algo": "svg",
     "env": "benchmark-half-cheetah",
     "policy":{
         "hidden_layers": [

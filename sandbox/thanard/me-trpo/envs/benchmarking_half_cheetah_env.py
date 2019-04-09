@@ -23,29 +23,20 @@ class BenchmarkHalfCheetahEnv(Serializable):
         self.observation_space = self._env._env.observation_space
 
     def reset(self, init_state=None):
+        self._env.reset()
         if init_state is not None:
             self.reset_mujoco(init_state)
             self._env._env.env.model.forward()
-        else:
-            self._env.reset()
         return self.get_current_obs()
 
     def reset_mujoco(self, init_state=None):
-        if init_state is None:
-            self._env._env.env.model.data.qpos = self._env._env.env.init_qpos + \
-                                   np.random.normal(size=self._env._env.env.init_qpos.shape) * 0.01
-            self._env._env.env.model.data.qvel = self._env._env.env.init_qvel + \
-                                   np.random.normal(size=self._env._env.env.init_qvel.shape) * 0.1
-            self._env._env.env.model.data.qacc = self.init_qacc
-            self._env._env.env.model.data.ctrl = self.init_ctrl
-        else:
-            start = 0
-            for datum_name in ["qpos", "qvel", "qacc", "ctrl"]:
-                datum = getattr(self._env._env.env.model.data, datum_name)
-                datum_dim = datum.shape[0]
-                datum = init_state[start: start + datum_dim]
-                setattr(self._env._env.env.model.data, datum_name, datum)
-                start += datum_dim
+        start = 0
+        for datum_name in ["qpos", "qvel", "qacc", "ctrl"]:
+            datum = getattr(self._env._env.env.model.data, datum_name)
+            datum_dim = datum.shape[0]
+            datum = init_state[start: start + datum_dim]
+            setattr(self._env._env.env.model.data, datum_name, datum)
+            start += datum_dim
 
     @property
     def model(self):
