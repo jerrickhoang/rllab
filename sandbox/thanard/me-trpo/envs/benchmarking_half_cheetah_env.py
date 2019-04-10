@@ -15,7 +15,6 @@ class BenchmarkHalfCheetahEnv(Serializable):
 
     def __init__(self, *args, **kwargs):
         Serializable.__init__(self, *args, **kwargs)
-        self.ctrl_cost_coeff = 1e-1
         self._env = walker.env('gym_cheetah', 1234, {})
         self.action_space = self._env._env.action_space
         self.observation_space = self._env._env.observation_space
