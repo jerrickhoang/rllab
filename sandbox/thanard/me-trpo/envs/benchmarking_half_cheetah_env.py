@@ -27,7 +27,7 @@ class BenchmarkHalfCheetahEnv(Serializable):
             self._env._env.env.model.forward()
         return self.get_current_obs()
 
-    def reset_mujoco(self, init_state=None):
+    def reset_mujoco(self, init_state):
         start = 0
         for datum_name in ["qpos", "qvel", "qacc", "ctrl"]:
             datum = getattr(self._env._env.env.model.data, datum_name)
@@ -71,11 +71,11 @@ class BenchmarkHalfCheetahEnv(Serializable):
     def cost_np(self, x, u, x_next):
         assert np.amax(np.abs(u)) <= 1.0
         data_dict = {"start_state": x, "action": u, "end_state": x_next}
-        return -self._env.reward(data_dict)
+        return -np.mean(np.clip(self._env.reward(data_dict), -10, 10))
 
     def cost_tf(self, x, u, x_next):
         data_dict = {"start_state": x, "action": u, "end_state": x_next}
-        return -1 * self._env.reward_tf(data_dict)
+        return -tf.reduce_mean(tf.clip_by_value(self._env.reward_tf(data_dict), -10, 10))
 
     def cost_np_vec(self, x, u, x_next):
         assert np.amax(np.abs(u)) <= 1.0

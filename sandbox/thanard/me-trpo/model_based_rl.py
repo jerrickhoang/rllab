@@ -1279,7 +1279,7 @@ def optimize_policy(env,
 
             if kwargs['algo_name'] == 'svg':
                 is_broken = True
-                break
+                # break
 
             ## Not done - we update.
             ## Done - we go back and reduce std.

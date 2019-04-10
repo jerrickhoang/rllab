@@ -429,7 +429,6 @@ def sample_trajectories(env,
 
             episode_cost = len(a) * cost_np_value
             # Check if cost_np + env_reward == 0
-            import pdb; pdb.set_trace()
             logger.info('%d steps, cost %.2f, verify_cost %.3f, avg_weight_change %.3f'
                         % (_counter - 1,
                            episode_cost,
@@ -506,7 +505,7 @@ def evaluate_fixed_init_trajectories(env,
         observations = next_observations
         cost += np.mean(costs)
         reward += np.mean(rewards)
-    assert cost + reward < 1e-2, "cost is {}, reward is {}".format(cost, reward)
+    # assert cost + reward < 1e-2, "cost is {}, reward is {}".format(cost, reward)
     return cost
 
 # def evaluate_learned_dynamics_trajectories(dynamics_in,

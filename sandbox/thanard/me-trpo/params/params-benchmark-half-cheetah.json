@@ -66,8 +66,8 @@
             "threshold": 0.10,
             "percent_models_threshold": 0.30
         },
-        "validation_init_path": "data_upload/policy_validation_inits_half_cheetah.save",
-        "validation_reset_init_path": "data_upload/policy_validation_reset_inits_half_cheetah.save",
+        "validation_init_path": "data_upload/policy_validation_inits_benchmark_half_cheetah.save",
+        "validation_reset_init_path": "data_upload/policy_validation_reset_inits_benchmark_half_cheetah.save",
         "trpo":{
             "init_std": 1.0,
             "step_size": 0.01,
